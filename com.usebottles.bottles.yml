@@ -24,9 +24,6 @@ add-extensions:
     no-autodownload: true
     download-if: have-intel-gpu
 
-sdk-extensions:
-- org.freedesktop.Sdk.Extension.toolchain-i386
-
 modules:
   - name: PyYAML
     buildsystem: simple
