@@ -142,7 +142,7 @@ modules:
       - mkdir -p /app/lib
       - mkdir -p /app/usr
 
-      - mv Bottles-2021.8.14-treviso-x86_64.AppImage Bottles.AppImage
+      - mv Bottles-2021.9.14-treviso-x86_64.AppImage Bottles.AppImage
       - chmod +x Bottles.AppImage
       - ./Bottles.AppImage --appimage-extract
       - rm Bottles.AppImage
