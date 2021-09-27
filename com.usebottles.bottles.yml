@@ -161,8 +161,8 @@ modules:
       
     sources:
     - type: file
-      url: https://github.com/bottlesdevs/Bottles/releases/download/2021.9.14-treviso/Bottles-2021.9.14-treviso-x86_64.AppImage
-      sha256: 9d9d05e461b6dfee0b9c2eb8361d13f2c5839bd77d9d272f771831481a33cf7f
+      url: https://github.com/bottlesdevs/Bottles/releases/download/2021.9.28-treviso/Bottles-2021.9.28-treviso-x86_64.AppImage
+      sha256: 956834cab36e7bfd0f5d17ed1312aa21c8c10b8a460b4b1545bff91762508ab0
       
     - type: file
       url: https://raw.githubusercontent.com/bottlesdevs/Bottles/master/eos_run.py
