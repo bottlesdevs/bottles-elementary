@@ -31,7 +31,7 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/yaml/pyyaml/archive/5.4.1.tar.gz'
+        url: https://github.com/yaml/pyyaml/archive/5.4.1.tar.gz
         sha256: 75f966559c5f262dfc44da0f958cc2aa18953ae5021f2c3657b415c5a370045f
 
   - name: python-requests
@@ -40,7 +40,7 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/requests/requests/archive/v2.25.1.tar.gz'
+        url: https://github.com/requests/requests/archive/v2.25.1.tar.gz
         sha256: 03b192fad682a33964df331d35f90918b1940c89f6c5bcb10060be688ba50315
 
   - name: python-urllib3
@@ -49,7 +49,7 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/urllib3/urllib3/archive/1.26.6.tar.gz'
+        url: https://github.com/urllib3/urllib3/archive/1.26.6.tar.gz
         sha256: ab4582b44fbe33f3e3fc838e3d90dde7f68fa3697aeb075962e0ba4b93020327
 
   - name: python-chardet
@@ -58,7 +58,7 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/chardet/chardet/archive/4.0.0.tar.gz'
+        url: https://github.com/chardet/chardet/archive/4.0.0.tar.gz
         sha256: 67bbe3eb02691d38831ddf2719c40fe09381bc17f15321946f6cd71dc274e530
 
   - name: python-certifi
@@ -67,7 +67,7 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/certifi/python-certifi/archive/2021.05.30.tar.gz'
+        url: https://github.com/certifi/python-certifi/archive/2021.05.30.tar.gz
         sha256: 9bffc4826ac0308591e26852a0404548a9e4e30b7214ebfd86360cd214f51dda
 
   - name: python-idna
@@ -76,17 +76,40 @@ modules:
       - python3 setup.py install --prefix=/app --root=/
     sources:
       - type: archive
-        url: 'https://github.com/kjd/idna/archive/v3.2.tar.gz'
+        url: https://github.com/kjd/idna/archive/v3.2.tar.gz
         sha256: 7104cb016a7b2c0d53195e6088abb5cdce03aa0c1b0874a4863c216f647abd29
+
+  - name: python-markdown
+    buildsystem: simple
+    build-commands:
+      - python3 setup.py install --prefix=/app --root=/
+    sources:
+      - type: archive
+        url: https://github.com/Python-Markdown/markdown/archive/refs/tags/3.3.4.tar.gz
+        sha256: dcba963ea6d47d845aaa5d169911052985eec90d50267850c5c4c4fb4b05eff7
+
+  - name: cabextract
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://www.cabextract.org.uk/cabextract-1.9.1.tar.gz
+        sha256: afc253673c8ef316b4d5c29cc4aa8445844bee14afffbe092ee9469405851ca7
         
   - name: patool
     buildsystem: simple
     build-commands:
-    - python3 setup.py install --prefix=/app --root=/
+      - python3 setup.py install --prefix=/app --root=/
     sources:
-    - type: archive
-      url: https://github.com/wummel/patool/archive/refs/tags/upstream/1.12.tar.gz
-      sha256: 582fd4b87c263325958c1550400504799018c88bc3444f249bba304ae1747f1f
+      - type: archive
+        url: https://github.com/wummel/patool/archive/refs/tags/upstream/1.12.tar.gz
+        sha256: 582fd4b87c263325958c1550400504799018c88bc3444f249bba304ae1747f1f
+      
+  - name: cabextract
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: 'https://www.cabextract.org.uk/cabextract-1.9.1.tar.gz'
+        sha256: afc253673c8ef316b4d5c29cc4aa8445844bee14afffbe092ee9469405851ca7
 
   - name: p7zip
     no-autogen: true
@@ -127,13 +150,34 @@ modules:
         sha256: f708be0b7b8c59bc1dbe7134153cd2f31faeebaa8eec48676c10f972a1f13df3
       cleanup:
       - "*"
-      
-  - name: cabextract
-    buildsystem: autotools
-    sources:
-      - type: archive
-        url: 'https://www.cabextract.org.uk/cabextract-1.9.1.tar.gz'
-        sha256: afc253673c8ef316b4d5c29cc4aa8445844bee14afffbe092ee9469405851ca7
+    
+    - name: gamemode
+      buildsystem: meson
+      config-opts: &gamemode_config_opts
+        - -Dwith-systemd=false
+        - -Dwith-daemon=false
+        - -Dwith-examples=false
+        - -Dwith-util=false
+        - -Dwith-sd-bus-provider=no-daemon
+      sources: &gamemode_sources
+        - type: archive
+          url: >-
+            https://github.com/FeralInteractive/gamemode/releases/download/1.6/gamemode-1.6.tar.xz
+          sha256: ede17eb042c1c87f7b35bfe96a00560afaea086f685d25bb3964d794b0af9c80
+
+    - name: gamemode-32bit
+      build-options:
+        arch:
+          x86_64: *compat_i386_opts
+      buildsystem: meson
+      config-opts: *gamemode_config_opts
+      sources: *gamemode_sources
+
+    - name: gamemoderun
+      buildsystem: simple
+      build-commands:
+        - install -Dm755 data/gamemoderun -t /app/bin
+      sources: *gamemode_sources
 
   - name: bottles
     buildsystem: simple
@@ -161,8 +205,8 @@ modules:
       
     sources:
     - type: file
-      url: https://github.com/bottlesdevs/Bottles/releases/download/2021.9.28-treviso/Bottles-2021.9.28-treviso-x86_64.AppImage
-      sha256: 956834cab36e7bfd0f5d17ed1312aa21c8c10b8a460b4b1545bff91762508ab0
+      url: https://github.com/bottlesdevs/Bottles/releases/download/2021.10.28-treviso/Bottles-2021.10.28-treviso-x86_64.AppImage
+      sha256: d2a90375d1c1a4d14c2110db80d5799154c2cf2d06e9c4f16198fbe286853cd8
       
     - type: file
       url: https://raw.githubusercontent.com/bottlesdevs/Bottles/master/eos_run.py
