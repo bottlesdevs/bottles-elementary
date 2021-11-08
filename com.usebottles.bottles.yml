@@ -150,34 +150,6 @@ modules:
         sha256: f708be0b7b8c59bc1dbe7134153cd2f31faeebaa8eec48676c10f972a1f13df3
       cleanup:
       - "*"
-    
-    - name: gamemode
-      buildsystem: meson
-      config-opts: &gamemode_config_opts
-        - -Dwith-systemd=false
-        - -Dwith-daemon=false
-        - -Dwith-examples=false
-        - -Dwith-util=false
-        - -Dwith-sd-bus-provider=no-daemon
-      sources: &gamemode_sources
-        - type: archive
-          url: >-
-            https://github.com/FeralInteractive/gamemode/releases/download/1.6/gamemode-1.6.tar.xz
-          sha256: ede17eb042c1c87f7b35bfe96a00560afaea086f685d25bb3964d794b0af9c80
-
-    - name: gamemode-32bit
-      build-options:
-        arch:
-          x86_64: *compat_i386_opts
-      buildsystem: meson
-      config-opts: *gamemode_config_opts
-      sources: *gamemode_sources
-
-    - name: gamemoderun
-      buildsystem: simple
-      build-commands:
-        - install -Dm755 data/gamemoderun -t /app/bin
-      sources: *gamemode_sources
 
   - name: bottles
     buildsystem: simple
